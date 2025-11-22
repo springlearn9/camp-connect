@@ -1,6 +1,6 @@
 package com.ls.campusconnect.model.entity;
 
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

@@ -7,7 +7,7 @@ import com.ls.campusconnect.repository.LostItemRepository;
 import com.ls.campusconnect.util.CampusServiceUtil;
 import com.ls.campusconnect.util.RequestMapper;
 import com.ls.campusconnect.util.ResponseMapper;
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import com.ls.comitte.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

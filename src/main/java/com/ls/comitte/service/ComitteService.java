@@ -4,7 +4,7 @@ import com.ls.comitte.model.request.ComitteRequest;
 import com.ls.comitte.model.response.ComitteResponse;
 import com.ls.comitte.model.entity.Comitte;
 import com.ls.comitte.model.entity.ComitteMemberMap;
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import com.ls.comitte.model.response.ComitteMemberMapResponse;
 import com.ls.comitte.repository.ComitteMemberMapRepository;
 import com.ls.comitte.repository.ComitteRepository;

@@ -2,7 +2,7 @@ package com.ls.campusconnect.util;
 
 import com.ls.campusconnect.model.entity.*;
 import com.ls.campusconnect.model.response.*;
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

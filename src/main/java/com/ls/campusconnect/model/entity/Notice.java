@@ -1,6 +1,6 @@
 package com.ls.campusconnect.model.entity;
 
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

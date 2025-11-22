@@ -2,7 +2,7 @@ package com.ls.comitte.service;
 
 import com.ls.comitte.model.entity.Bid;
 import com.ls.comitte.model.entity.Comitte;
-import com.ls.comitte.model.entity.Member;
+import com.ls.auth.model.entity.Member;
 import com.ls.comitte.model.request.BidRequest;
 import com.ls.comitte.model.response.BidResponse;
 import com.ls.comitte.repository.BidRepository;

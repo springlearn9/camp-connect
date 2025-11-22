@@ -12,12 +12,6 @@ public interface RequestMapper {
 
     @Mapping(target = "createdTimestamp", ignore = true)
     @Mapping(target = "updatedTimestamp", ignore = true)
-    @Mapping(target = "roles", ignore = true)
-    @Mapping(target = "memberId", ignore = true)
-    Member toEntity(MemberRequest memberRequest);
-
-    @Mapping(target = "createdTimestamp", ignore = true)
-    @Mapping(target = "updatedTimestamp", ignore = true)
     @Mapping(target = "comitteId", ignore = true)
     @Mapping(target = "owner", ignore = true)
     @Mapping(target = "bidsCount", ignore = true)
