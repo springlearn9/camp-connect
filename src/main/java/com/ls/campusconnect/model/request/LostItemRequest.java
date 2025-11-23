@@ -34,6 +34,6 @@ public class LostItemRequest {
     
     private Boolean isAnonymous;
     
-    @NotNull(message = "User ID is required")
+    // Optional - defaults to Campus Administrator (ID 11) if not provided or invalid
     private Long userId;
 }

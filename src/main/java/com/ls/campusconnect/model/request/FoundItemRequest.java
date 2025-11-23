@@ -36,6 +36,6 @@ public class FoundItemRequest {
     
     private Boolean isAnonymous;
     
-    @NotNull(message = "Reported by member ID is required")
+    // Optional - defaults to Campus Administrator (ID 11) if not provided or invalid
     private Long reportedById;
 }

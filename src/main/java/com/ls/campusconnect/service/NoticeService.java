@@ -96,9 +96,16 @@ public class NoticeService {
     public NoticeResponse create(NoticeRequest noticeRequest) {
         Notice notice = requestMapper.toEntity(noticeRequest);
         
-        // Set the posted by member
-        Member postedBy = memberRepository.findById(noticeRequest.getPostedById())
-                .orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND + ": " + noticeRequest.getPostedById()));
+        // Set the posted by member - use provided ID or default to Campus Administrator (ID 11)
+        Long postedById = noticeRequest.getPostedById();
+        if (postedById == null) {
+            postedById = 11L; // Default to Campus Administrator
+        }
+        
+        // If member not found, fall back to Campus Administrator
+        Member postedBy = memberRepository.findById(postedById)
+                .orElseGet(() -> memberRepository.findById(11L)
+                        .orElseThrow(() -> new RuntimeException("Default member (ID 11) not found in database")));
         notice.setPostedBy(postedBy);
         
         notice = noticeRepository.save(notice);

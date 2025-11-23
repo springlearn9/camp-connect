@@ -82,9 +82,16 @@ public class EventService {
     public EventResponse create(EventRequest eventRequest) {
         Event event = requestMapper.toEntity(eventRequest);
         
-        // Set the posted by member
-        Member postedBy = memberRepository.findById(eventRequest.getPostedById())
-                .orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND + ": " + eventRequest.getPostedById()));
+        // Set the posted by member - use provided ID or default to Campus Administrator (ID 11)
+        Long postedById = eventRequest.getPostedById();
+        if (postedById == null) {
+            postedById = 11L; // Default to Campus Administrator
+        }
+        
+        // If member not found, fall back to Campus Administrator
+        Member postedBy = memberRepository.findById(postedById)
+                .orElseGet(() -> memberRepository.findById(11L)
+                        .orElseThrow(() -> new RuntimeException("Default member (ID 11) not found in database")));
         event.setPostedBy(postedBy);
         
         event = eventRepository.save(event);

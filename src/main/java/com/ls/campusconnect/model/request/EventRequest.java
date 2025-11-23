@@ -24,6 +24,6 @@ public class EventRequest {
     
     private String status; // ACTIVE, CANCELLED, COMPLETED
     
-    @NotNull(message = "Posted by member ID is required")
+    // Optional - defaults to Campus Administrator (ID 11) if not provided or invalid
     private Long postedById;
 }

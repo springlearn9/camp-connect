@@ -81,9 +81,16 @@ public class FoundItemService {
     public FoundItemResponse create(FoundItemRequest foundItemRequest) {
         FoundItem foundItem = requestMapper.toEntity(foundItemRequest);
         
-        // Set the reported by member
-        Member reportedBy = memberRepository.findById(foundItemRequest.getReportedById())
-                .orElseThrow(() -> new RuntimeException(MEMBER_NOT_FOUND + ": " + foundItemRequest.getReportedById()));
+        // Set the reported by member - use provided ID or default to Campus Administrator (ID 11)
+        Long reportedById = foundItemRequest.getReportedById();
+        if (reportedById == null) {
+            reportedById = 11L; // Default to Campus Administrator
+        }
+        
+        // If member not found, fall back to Campus Administrator
+        Member reportedBy = memberRepository.findById(reportedById)
+                .orElseGet(() -> memberRepository.findById(11L)
+                        .orElseThrow(() -> new RuntimeException("Default member (ID 11) not found in database")));
         foundItem.setReportedBy(reportedBy);
         
         foundItem = foundItemRepository.save(foundItem);
