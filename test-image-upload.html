@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Found Item Image Upload - Test Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="datetime-local"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .response.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .response.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .response pre {
+            margin-top: 10px;
+            background: rgba(0,0,0,0.05);
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Report Found Item with Images</h1>
+        
+        <div class="note">
+            <strong>Note:</strong> Make sure the backend server is running on <code>http://localhost:8082</code>
+        </div>
+
+        <form id="foundItemForm">
+            <div class="form-group">
+                <label for="itemName">Item Name *</label>
+                <input type="text" id="itemName" name="itemName" required 
+                       placeholder="e.g., Blue Backpack">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" 
+                          placeholder="Describe the found item..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location Found</label>
+                <input type="text" id="location" name="location" 
+                       placeholder="e.g., Main Library, 2nd Floor">
+            </div>
+
+            <div class="form-group">
+                <label for="foundDate">Found Date & Time</label>
+                <input type="datetime-local" id="foundDate" name="foundDate">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="">Select a category</option>
+                    <option value="ELECTRONICS">Electronics</option>
+                    <option value="DOCUMENTS">Documents</option>
+                    <option value="CLOTHING">Clothing</option>
+                    <option value="ACCESSORIES">Accessories</option>
+                    <option value="BOOKS">Books</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="contactInfo">Contact Information</label>
+                <input type="text" id="contactInfo" name="contactInfo" 
+                       placeholder="Email or phone number">
+            </div>
+
+            <div class="form-group">
+                <label for="distinctiveFeatures">Distinctive Features</label>
+                <textarea id="distinctiveFeatures" name="distinctiveFeatures" 
+                          placeholder="Any unique identifiers or features..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="handoverLocation">Handover Location</label>
+                <input type="text" id="handoverLocation" name="handoverLocation" 
+                       placeholder="Where the item can be collected">
+            </div>
+
+            <div class="form-group">
+                <label for="reportedById">Reported By (Member ID) *</label>
+                <input type="text" id="reportedById" name="reportedById" required 
+                       placeholder="Enter member ID (e.g., 1)">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="verificationRequired" name="verificationRequired" checked>
+                    Verification Required
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="isAnonymous" name="isAnonymous">
+                    Report Anonymously
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="photo">Main Photo</label>
+                <input type="file" id="photo" name="photo" accept="image/jpeg,image/jpg,image/png,image/gif">
+                <small style="color: #666;">Accepted: JPG, PNG, GIF (max 5MB)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalImages">Additional Images</label>
+                <input type="file" id="additionalImages" name="additionalImages" multiple 
+                       accept="image/jpeg,image/jpg,image/png,image/gif">
+                <small style="color: #666;">You can select multiple images</small>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit Report</button>
+        </form>
+
+        <div id="response" class="response"></div>
+    </div>
+
+    <script>
+        document.getElementById('foundItemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const responseDiv = document.getElementById('response');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Hide previous response
+            responseDiv.style.display = 'none';
+            responseDiv.className = 'response';
+            
+            try {
+                const formData = new FormData();
+                
+                // Add form fields
+                formData.append('itemName', document.getElementById('itemName').value);
+                
+                const description = document.getElementById('description').value;
+                if (description) formData.append('description', description);
+                
+                const location = document.getElementById('location').value;
+                if (location) formData.append('location', location);
+                
+                const foundDate = document.getElementById('foundDate').value;
+                if (foundDate) formData.append('foundDate', new Date(foundDate).toISOString());
+                
+                const category = document.getElementById('category').value;
+                if (category) formData.append('category', category);
+                
+                const contactInfo = document.getElementById('contactInfo').value;
+                if (contactInfo) formData.append('contactInfo', contactInfo);
+                
+                const distinctiveFeatures = document.getElementById('distinctiveFeatures').value;
+                if (distinctiveFeatures) formData.append('distinctiveFeatures', distinctiveFeatures);
+                
+                const handoverLocation = document.getElementById('handoverLocation').value;
+                if (handoverLocation) formData.append('handoverLocation', handoverLocation);
+                
+                formData.append('reportedById', document.getElementById('reportedById').value);
+                formData.append('verificationRequired', document.getElementById('verificationRequired').checked);
+                formData.append('isAnonymous', document.getElementById('isAnonymous').checked);
+                
+                // Add main photo
+                const photo = document.getElementById('photo').files[0];
+                if (photo) formData.append('photo', photo);
+                
+                // Add additional images
+                const additionalImages = document.getElementById('additionalImages').files;
+                for (let i = 0; i < additionalImages.length; i++) {
+                    formData.append('additionalImages', additionalImages[i]);
+                }
+                
+                // Submit to server
+                const response = await fetch('http://localhost:8082/api/campus/found-items/with-images', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    responseDiv.className = 'response success';
+                    responseDiv.innerHTML = `
+                        <strong>✓ Success!</strong> Found item reported successfully.
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    // Reset form
+                    document.getElementById('foundItemForm').reset();
+                } else {
+                    responseDiv.className = 'response error';
+                    responseDiv.innerHTML = `
+                        <strong>✗ Error!</strong> ${data.message || 'Failed to submit report'}
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                responseDiv.className = 'response error';
+                responseDiv.innerHTML = `
+                    <strong>✗ Error!</strong> ${error.message}
+                    <p>Make sure the backend server is running on http://localhost:8082</p>
+                `;
+            } finally {
+                responseDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Report';
+            }
+        });
+    </script>
+</body>
+</html>

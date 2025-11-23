@@ -2,6 +2,14 @@ server:
   port: 8082
 
 spring:
+  # Multipart File Upload Configuration
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+      file-size-threshold: 2KB
+
   # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/campus_connect_db
@@ -50,6 +58,13 @@ email:
   password-reset-email-subject: "Password Reset"
   password-reset-email-body: "To reset your password, click the link below:\n {0} \n       or \n Enter otp: {1}"
   password-reset-token-expiry: 5
+
+# File Upload Configuration
+file:
+  upload:
+    upload-dir: uploads
+    max-file-size: 5242880  # 5MB in bytes
+    allowed-extensions: jpg,jpeg,png,gif
 
 # ---------------------------------------------------
 # --- SpringDoc (Swagger) OpenAPI 3 Configuration ---

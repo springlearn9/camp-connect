@@ -4,12 +4,16 @@ import com.ls.campusconnect.model.entity.FoundItem;
 import com.ls.campusconnect.model.request.FoundItemRequest;
 import com.ls.campusconnect.model.response.FoundItemResponse;
 import com.ls.campusconnect.service.FoundItemService;
+import com.ls.common.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,6 +30,7 @@ import java.util.List;
 public class FoundItemController {
     
     private final FoundItemService foundItemService;
+    private final FileStorageService fileStorageService;
 
     /**
      * Creates a new found item.
@@ -38,6 +43,90 @@ public class FoundItemController {
         log.info("Creating new found item: {}", foundItemRequest.getItemName());
         FoundItemResponse response = foundItemService.create(foundItemRequest);
         log.info("Found item created with ID: {}", response.id());
+        return ResponseEntity.status(201).body(response);
+    }
+
+    /**
+     * Creates a new found item with image upload support.
+     * Accepts multipart/form-data with optional photo and additional images.
+     * 
+     * @param itemName the name of the found item
+     * @param description optional description
+     * @param location where the item was found
+     * @param foundDate when the item was found
+     * @param category item category (ELECTRONICS, DOCUMENTS, etc.)
+     * @param contactInfo contact information
+     * @param distinctiveFeatures distinctive features of the item
+     * @param handoverLocation where to handover the item
+     * @param verificationRequired whether verification is required
+     * @param isAnonymous whether to report anonymously
+     * @param reportedById the ID of the member reporting the item
+     * @param photo optional main photo of the item
+     * @param additionalImages optional additional photos
+     * @return ResponseEntity with FoundItemResponse and HTTP 201 status
+     */
+    @PostMapping(value = "/with-images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<FoundItemResponse> createWithImages(
+            @RequestParam("itemName") String itemName,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "foundDate", required = false) String foundDate,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "contactInfo", required = false) String contactInfo,
+            @RequestParam(value = "distinctiveFeatures", required = false) String distinctiveFeatures,
+            @RequestParam(value = "handoverLocation", required = false) String handoverLocation,
+            @RequestParam(value = "verificationRequired", required = false) Boolean verificationRequired,
+            @RequestParam(value = "isAnonymous", required = false) Boolean isAnonymous,
+            @RequestParam("reportedById") Long reportedById,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam(value = "additionalImages", required = false) MultipartFile[] additionalImages) {
+        
+        log.info("Creating new found item with images: {}", itemName);
+        
+        // Store main photo if provided
+        String photoUrl = null;
+        if (photo != null && !photo.isEmpty()) {
+            photoUrl = fileStorageService.storeFile(photo);
+            log.info("Main photo stored: {}", photoUrl);
+        }
+        
+        // Store additional images if provided
+        String additionalImagesStr = null;
+        if (additionalImages != null && additionalImages.length > 0) {
+            additionalImagesStr = fileStorageService.storeFiles(additionalImages);
+            log.info("Additional images stored: {}", additionalImagesStr);
+        }
+        
+        // Parse foundDate if provided
+        LocalDateTime parsedFoundDate = null;
+        if (foundDate != null && !foundDate.isEmpty()) {
+            try {
+                parsedFoundDate = LocalDateTime.parse(foundDate);
+            } catch (Exception e) {
+                log.warn("Failed to parse foundDate, using null: {}", foundDate);
+            }
+        }
+        
+        // Create request object
+        FoundItemRequest request = new FoundItemRequest(
+            itemName,
+            description,
+            location,
+            parsedFoundDate,
+            null, // status will be set to default AVAILABLE
+            category,
+            contactInfo,
+            photoUrl,
+            additionalImagesStr,
+            distinctiveFeatures,
+            handoverLocation,
+            verificationRequired,
+            isAnonymous,
+            reportedById
+        );
+        
+        FoundItemResponse response = foundItemService.create(request);
+        log.info("Found item created with ID: {} and images", response.id());
         return ResponseEntity.status(201).body(response);
     }
 
