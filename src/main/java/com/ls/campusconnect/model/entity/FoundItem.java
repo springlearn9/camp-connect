@@ -26,9 +26,10 @@ public class FoundItem {
     @Column(name = "item_name")
     private String itemName;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
     private String location;
 
     @Column(name = "found_date")
@@ -40,21 +41,21 @@ public class FoundItem {
     @Column(name = "category")
     private String category; // ELECTRONICS, DOCUMENTS, CLOTHING, ACCESSORIES, BOOKS, OTHER
 
-    @Column(name = "contact_info")
+    @Column(name = "contact_info", columnDefinition = "TEXT")
     private String contactInfo;
 
     // Enhanced image support
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", columnDefinition = "TEXT")
     private String photoUrl;
 
-    @Column(name = "additional_images", length = 1000)
+    @Column(name = "additional_images", columnDefinition = "TEXT")
     private String additionalImages; // JSON array of image URLs
 
     // Additional details
-    @Column(name = "distinctive_features")
+    @Column(name = "distinctive_features", columnDefinition = "TEXT")
     private String distinctiveFeatures;
 
-    @Column(name = "handover_location")
+    @Column(name = "handover_location", columnDefinition = "TEXT")
     private String handoverLocation;
 
     @Column(name = "verification_required")
